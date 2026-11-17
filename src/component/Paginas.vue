@@ -2,6 +2,7 @@
     import { storeCitas } from '@/stores/storeCitas';
     import { storeToRefs } from 'pinia';
     import ListaCitas from './ListaCitas.vue';
+    import SeleccionMultiple from './SeleccionMultiple.vue';
 
 
     const citasStore = storeCitas()
@@ -19,6 +20,7 @@
         @siguiente="citasStore.siguiente()"
 
     />
+    <SeleccionMultiple v-slot="{seleccionados,alternar,selecc}"/>
 
 </template>
 <style scoped></style>
