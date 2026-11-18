@@ -15,7 +15,7 @@
         <input type="text" v-model="busqueda" placeholder="Dijita el nombre del cliente">
 
         <div v-if="filtradas.length===0">
-            No hya citas
+            No hay citas
         </div>
         <li v-for="cita in itemsCitas">
             <strong>Nombre: {{cita.nombre  }} </strong><br>
@@ -25,14 +25,14 @@
         </li>
         <div class="botnes">
             <button
-        @click="$emit('anterior')" :disabled="pagina<=1">
+            @click="$emit('anterior')" :disabled="pagina<=1">
             Anterior
         </button>
         
         {{pagina}} de {{ totalPagina }}
         
         <button
-        @click="$emit('siguiente')" :disabled="pagina>=totalPagina">
+            @click="$emit('siguiente')" :disabled="pagina>=totalPagina">
             Siguiente
         </button>
         </div>
@@ -43,16 +43,17 @@
 </template>
 <style scopet>
     .cards{
-        background-color: rgb(209, 91, 91);
+        background-color: rgb(222, 219, 219);
         width: 400px;
         position: fixed;
         border-radius: 10px;
-        border-left: .4rem solid rgb(11, 11, 11); 
+        border-left: .4rem solid rgb(244, 59, 59); 
         font-family: sans-serif;
         padding: 2rem;
         margin-left: 200px;
         margin-top: 3rem;
     }
+
     .cards li{
         padding: 1rem;
     }
@@ -79,7 +80,7 @@
         background-color: rgb(197, 184, 184);
     }
     .botnes button:disabled{
-        background-color: rgb(209, 91, 91);
-        color: rgb(209, 91, 91);
+        background-color: rgb(222, 219, 219);
+        color:  rgb(222, 219, 219);
     }
 </style>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { diseñoCitas } from "@/types/type";
-import { computed, ref } from "vue";
+import { computed, ref ,watchEffect} from "vue";
 import { useDebounce } from "@/composable/useDebounce";
 import { usePaginacion } from "@/composable/usePaginacion";
 export const storeCitas = defineStore('citas',()=>{
@@ -12,14 +12,13 @@ export const storeCitas = defineStore('citas',()=>{
             {id:5,nombre:'Andres',consulta:'Normal',estado:'Aprobada',fecha:'23/02/2026'},
              {id:6,nombre:'Maria',consulta:'Radiografia',estado:'Pendiente',fecha:'27/03/2026'}
     ])
-    console.log(creoCitas)
+    
     const busqueda = ref('')
     
     const busquedaDebounced = useDebounce(busqueda,300)
 
     const filtradas = computed(()=>{
         const texto = busquedaDebounced.value.trim().toLowerCase()
-        console.log('busqda:' + busqueda.value)
         return creoCitas.value.filter(cita=>cita.nombre.toLocaleLowerCase().includes(texto)
         )
     })
