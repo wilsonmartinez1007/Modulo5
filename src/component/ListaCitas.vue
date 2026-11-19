@@ -7,16 +7,14 @@
         totalPagina:number
         }>()
     defineEmits(['update:prioridad','anterior','siguiente'])
-    const busqueda = defineModel('prioridad')
+    
 </script>
 <template>
-    <section class="cards">
-        <h2>Buscador de citas</h2>
-        <input type="text" v-model="busqueda" placeholder="Dijita el nombre del cliente">
-
-        <div v-if="filtradas.length===0">
+    <div v-if="filtradas.length===0">
             No hay citas
         </div>
+    <section v-else class="cards">
+        
         <li v-for="cita in itemsCitas">
             <strong>Nombre: {{cita.nombre  }} </strong><br>
             <strong>Consulta: {{ cita.consulta }}</strong><br>

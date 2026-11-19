@@ -3,8 +3,8 @@
     import { storeToRefs } from 'pinia';
     import ListaCitas from './ListaCitas.vue';
     import SeleccionMultiple from './SeleccionMultiple.vue';
-    import { computed } from 'vue';
-
+    import { computed ,ref} from 'vue';
+    import FiltroCitas from './FiltroCitas.vue';
 
     const citasStore = storeCitas()
     const {busqueda,filtradas,creoCitas} = storeToRefs(citasStore)
@@ -12,7 +12,8 @@
     const ids = computed(()=>{
         return creoCitas.value.map(c=>c.id)
     })
-        
+    
+    
     const botones = ref(true)
     
     </script>
@@ -29,8 +30,10 @@
     </SeleccionMultiple>-->
     <div class="columnas">
         <div>
+            <FiltroCitas
+                v-model:prioridad="busqueda"/>
             <ListaCitas
-            v-model:prioridad="busqueda"
+            
             :items-citas="citasStore.itemsPagina"
             :filtradas="filtradas"
             :pagina="citasStore.pagina"

@@ -1,9 +1,11 @@
 import { computed, ref, toValue, watch } from "vue"
 
 export function usePaginacion(lista:any,tamaño:number){//lista(0,1,2,3,4,5)
+    console.log('entropag'+ tamaño)
     const pagina = ref(1)
     const itemsPagina = computed(()=>{//return lista(0,1,2)
         const inicio = (pagina.value - 1 )*tamaño
+        console.log('entrocoonsole')
         return toValue(lista).slice(inicio,inicio+tamaño)
     })
 
