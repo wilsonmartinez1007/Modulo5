@@ -3,7 +3,8 @@
     import { storeToRefs } from 'pinia';
     import ListaCitas from './ListaCitas.vue';
     import SeleccionMultiple from './SeleccionMultiple.vue';
-    import { computed ,ref} from 'vue';
+    import { useSeleccionMultiple } from '@/composable/useSeleccionMultiple.ts';
+    import { computed} from 'vue';
     import FiltroCitas from './FiltroCitas.vue';
 
     const citasStore = storeCitas()
@@ -14,8 +15,7 @@
     })
     
     
-    const botones = ref(true)
-    
+    const {seleccionados,alternar,isSelecc,limpiar,selecTodas} = useSeleccionMultiple(ids)
     </script>
 <template>
     
@@ -42,7 +42,7 @@
             @siguiente="citasStore.siguiente()"
             /></div>
         <div>
-            <SeleccionMultiple :ids="ids" v-slot="{alternar,limpiar,selecc,seTodas}">
+            <!--<SeleccionMultiple :ids="ids.value" v-slot="{alternar,limpiar,selecc,seTodas}">
               <div class="columnas">
                 <div  v-for="x in creoCitas" :key="x.id" @click="alternar(x.id)" :class="{activar:selecc(x.id)}" class="tarjetas">
                    
@@ -57,7 +57,21 @@
                 
                 <button @click="seTodas(),botones=!botones" :disabled="!botones" >seleccionar todas</button>
                 <button @click="limpiar(),botones=!botones" :disabled="botones">limpiar selecciones</button>
-            </SeleccionMultiple>
+            </SeleccionMultiple>-->
+            <div class="columnas">
+                <div  v-for="x in creoCitas" :key="x.id" @click="alternar(x.id)" :class="{activar:isSelecc(x.id)}" class="tarjetas">
+                   
+                    <strong>Nombre: {{x.nombre  }} </strong><br>
+                    <strong>Consulta: {{ x.consulta }}</strong><br>
+                    <strong>Estado: {{ x.estado }}</strong><br>
+                    <strong>Fecha: {{ x.fecha }}</strong><br>
+                
+                
+                </div>
+              </div>
+                
+                <button @click="selecTodas()" :disabled="seleccionados.length===ids.length" >seleccionar todas</button>
+                <button @click="limpiar()" :disabled="seleccionados.length===0">limpiar selecciones</button>
             </div>
         
         
