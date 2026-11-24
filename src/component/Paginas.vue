@@ -8,7 +8,7 @@
     import FiltroCitas from './FiltroCitas.vue';
 
     const citasStore = storeCitas()
-    const {busqueda,filtradas,creoCitas} = storeToRefs(citasStore)
+    const {busqueda,creoCitas} = storeToRefs(citasStore)
     
     const ids = computed(()=>{
         return creoCitas.value.map(c=>c.id)
@@ -18,6 +18,7 @@
     const {seleccionados,alternar,isSelecc,limpiar,selecTodas} = useSeleccionMultiple(ids)
     </script>
 <template>
+    <header class="barraheader"></header>
     
     <!--CHECKBOX
     <SeleccionMultiple v-slot="{seleccionados,alternar,selecc}">
@@ -30,12 +31,16 @@
     </SeleccionMultiple>-->
     <div class="columnas">
         <div>
-            <FiltroCitas
+            <div class="filtroCit">
+                <FiltroCitas
                 v-model:prioridad="busqueda"/>
+            </div>
+            
+            
+            
             <ListaCitas
             
             :items-citas="citasStore.itemsPagina"
-            :filtradas="filtradas"
             :pagina="citasStore.pagina"
             :total-pagina="citasStore.totalPaginas"
             @anterior="citasStore.anterior()"
@@ -79,6 +84,17 @@
     
 </template>
 <style scoped>
+    .barraheader{
+        width: 1520px;
+        background-color: rgba(50, 44, 44, 0.598);
+        height: 90px;
+    }
+    .filtroCit{
+        margin-left: 200px;
+        color: rgb(220, 70, 67);
+        font-size: 1.5rem;
+    }
+    
     .columnas{
         display: grid;
         grid-template-columns: 2fr auto;
@@ -109,7 +125,7 @@
         font-family:sans-serif;
         padding: .5rem;
         margin-right: 70px;   
-        margin-top: 55px; 
+        margin-top: 25px; 
         border-radius: 10px;
         background-color: rgb(248, 249, 249);
         width:200px;

@@ -2,7 +2,6 @@
     import type { diseñoCitas } from '@/types/type';
     defineProps<{
         itemsCitas:diseñoCitas[],
-        filtradas:diseñoCitas[],
         pagina:number,
         totalPagina:number
         }>()
@@ -10,17 +9,19 @@
     
 </script>
 <template>
-    <div v-if="filtradas.length===0">
+    <div v-if="itemsCitas.length===0">
             No hay citas
         </div>
     <section v-else class="cards">
         
-        <li v-for="cita in itemsCitas">
+        <ul v-for="cita in itemsCitas" :key="cita.id">
+
             <strong>Nombre: {{cita.nombre  }} </strong><br>
             <strong>Consulta: {{ cita.consulta }}</strong><br>
             <strong>Estado: {{ cita.estado }}</strong><br>
             <strong>Fecha: {{ cita.fecha }}</strong>
-        </li>
+              
+        </ul>
         <div class="botnes">
             <button
             @click="$emit('anterior')" :disabled="pagina<=1">

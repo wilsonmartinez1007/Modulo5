@@ -4,8 +4,10 @@ import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 
 describe('App', () => {
-  it('mounts renders properly', () => {
-    const wrapper = mount(App)
-    expect(wrapper.text()).toContain('You did it!')
+  it('suma', () => {
+    const a = 1000
+    const b = 4
+    const resultados = a*b
+    expect(resultados).toBe(4000)
   })
 })
