@@ -6,7 +6,8 @@
     import { useSeleccionMultiple } from '@/composable/useSeleccionMultiple.ts';
     import { computed} from 'vue';
     import FiltroCitas from './FiltroCitas.vue';
-
+    import { useTema} from '@/composable/useTema.ts';
+    const {cambiarTema, esClaro} = useTema()
     const citasStore = storeCitas()
     const {busqueda,creoCitas} = storeToRefs(citasStore)
     
@@ -18,7 +19,9 @@
     const {seleccionados,alternar,isSelecc,limpiar,selecTodas} = useSeleccionMultiple(ids)
     </script>
 <template>
-    <header class="barraheader"></header>
+    <header :class="esClaro? 'comprobarClaro':'comprobarOscuro'">
+        <button @click="cambiarTema" class="botonTema" >Cambiar tema</button>
+    </header>
     
     <!--CHECKBOX
     <SeleccionMultiple v-slot="{seleccionados,alternar,selecc}">
@@ -29,7 +32,7 @@
         
         </label>
     </SeleccionMultiple>-->
-    <div class="columnas">
+    <div class="columnas" :class="esClaro? 'panelClaro': 'panelOscuro'">
         <div>
             <div class="filtroCit">
                 <FiltroCitas
@@ -63,35 +66,66 @@
                 <button @click="seTodas(),botones=!botones" :disabled="!botones" >seleccionar todas</button>
                 <button @click="limpiar(),botones=!botones" :disabled="botones">limpiar selecciones</button>
             </SeleccionMultiple>-->
+             <button @click="selecTodas()" :disabled="seleccionados.length===ids.length" >seleccionar todas</button>
+                <button @click="limpiar()" :disabled="seleccionados.length===0">limpiar selecciones</button>
+            
             <div class="columnas">
-                <div  v-for="x in creoCitas" :key="x.id" @click="alternar(x.id)" :class="{activar:isSelecc(x.id)}" class="tarjetas">
-                   
-                    <strong>Nombre: {{x.nombre  }} </strong><br>
+                <div  v-for="x in creoCitas" :key="x.id" @click="alternar(x.id)" >
+                   <div :class="[
+                    esClaro? 'tarjetas':'tarjetasOscuro' ,
+                    isSelecc(x.id)?'activar':'']"><strong>Nombre: {{x.nombre  }} </strong><br>
                     <strong>Consulta: {{ x.consulta }}</strong><br>
                     <strong>Estado: {{ x.estado }}</strong><br>
-                    <strong>Fecha: {{ x.fecha }}</strong><br>
+                    <strong>Fecha: {{ x.fecha }}</strong><br></div>
+                    
                 
                 
                 </div>
+                
               </div>
                 
-                <button @click="selecTodas()" :disabled="seleccionados.length===ids.length" >seleccionar todas</button>
-                <button @click="limpiar()" :disabled="seleccionados.length===0">limpiar selecciones</button>
-            </div>
+               </div>
         
         
 </div>
     
 </template>
 <style scoped>
-    .barraheader{
-        width: 1520px;
-        background-color: rgba(50, 44, 44, 0.598);
-        height: 90px;
+    .panelOscuro{
+        background-color: rgb(156, 153, 153);
+        height: 100vh;
+        width: 100%;
     }
+    .panelClaro{
+        background-color: rgb(251, 244, 244);
+        height: 100vh;
+        width: 100%;
+    }
+    
+    
+    .comprobarClaro{
+        background-color: tomato;
+        height: 158px;
+        width: 1508px;}
+    .comprobarOscuro{
+        background-color: rgb(73, 71, 74);
+        height: 158px;
+        width: 1508px;}
+    .botonTema{
+        margin-left: 1335px;
+        margin-top: 20px;
+        padding: .3rem;
+        border-radius: 5px;
+        border-color: aqua;
+
+    }
+    .botonTema:hover{
+        background-color: aqua;
+    }
+    
     .filtroCit{
         margin-left: 200px;
-        color: rgb(220, 70, 67);
+        color: rgb(59, 55, 54);
         font-size: 1.5rem;
     }
     
@@ -121,13 +155,26 @@
     .tarjetas{
         display: grid;
         grid-template-columns: 2,1fr;
-        border-left: .3rem solid black;
+        border-left: .3rem solid rgb(197, 193, 188);
         font-family:sans-serif;
         padding: .5rem;
         margin-right: 70px;   
         margin-top: 25px; 
         border-radius: 10px;
-        background-color: rgb(248, 249, 249);
+        background-color: rgb(175, 227, 227);
+        width:200px;
+    }
+    
+    .tarjetasOscuro{
+        display: grid;
+        grid-template-columns: 2,1fr;
+        border-left: .3rem solid rgb(255, 252, 252);
+        font-family:sans-serif;
+        padding: .5rem;
+        margin-right: 70px;   
+        margin-top: 25px; 
+        border-radius: 10px;
+        background-color: rgb(98, 97, 101);
         width:200px;
     }
     .activar{

@@ -1,19 +1,21 @@
 <script setup lang="ts">
     import type { diseñoCitas } from '@/types/type';
+    import { useTema } from '@/composable/useTema';
+    const {esClaro} = useTema()
     defineProps<{
         itemsCitas:diseñoCitas[],
         pagina:number,
         totalPagina:number
         }>()
     defineEmits(['update:prioridad','anterior','siguiente'])
-    
+
 </script>
 <template>
     <div v-if="itemsCitas.length===0">
-            No hay citas
+                No hay citas
         </div>
-    <section v-else class="cards">
-        
+    <section v-else :class="esClaro? 'cards':'cardsOsucro'">
+        <p>escla{{ esClaro }}</p>
         <ul v-for="cita in itemsCitas" :key="cita.id">
 
             <strong>Nombre: {{cita.nombre  }} </strong><br>
@@ -41,12 +43,21 @@
 
 </template>
 <style scopet>
-    .cards{
-        background-color: rgb(222, 219, 219);
+    .cardsOsucro{
+        background-color: rgb(115, 114, 119);
         width: 400px;
-        position: fixed;
         border-radius: 10px;
-        border-left: .4rem solid rgb(244, 59, 59); 
+        border-left: .4rem solid rgb(253, 248, 248); 
+        font-family: sans-serif;
+        padding: 2rem;
+        margin-left: 200px;
+        margin-top: 3rem;
+    }
+    .cards{
+        background-color: rgb(116, 200, 201);
+        width: 400px;
+        border-radius: 10px;
+        border-left: .4rem solid rgb(182, 172, 172); 
         font-family: sans-serif;
         padding: 2rem;
         margin-left: 200px;
@@ -79,7 +90,7 @@
         background-color: rgb(197, 184, 184);
     }
     .botnes button:disabled{
-        background-color: rgb(222, 219, 219);
-        color:  rgb(222, 219, 219);
+        background-color: transparent;
+        color:  transparent;
     }
 </style>
