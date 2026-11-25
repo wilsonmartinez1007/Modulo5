@@ -1,0 +1,1 @@
+export type TipoTarifa = 'tienda'|'domicilio'|'internacional'

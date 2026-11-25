@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { diseñoCitas } from "@/types/type";
+import type { diseñoCitas, diseñoCompras } from "@/types/type";
 import { computed, ref } from "vue";
 import { useDebounce } from "@/composable/useDebounce";
 import { usePaginacion } from "@/composable/usePaginacion";
@@ -12,6 +12,15 @@ export const storeCitas = defineStore('citas',()=>{
             {id:5,nombre:'Andres',consulta:'Normal',estado:'Aprobada',fecha:'23/02/2026'},
              {id:6,nombre:'Maria',consulta:'Radiografia',estado:'Pendiente',fecha:'27/03/2026'}
     ])
+    const creoCompras = ref<diseñoCompras[]>([
+        {id:1,nombre:'reloj',descripcion:'pues reloj',precio:12222},
+         {id:2,nombre:'celular',descripcion:'Normal',precio:34343},
+          {id:3,nombre:'laptop',descripcion:'Ecografia',precio:434222},
+           {id:4,nombre:'pantalla',descripcion:'Normal',precio:76000},
+            {id:5,nombre:'Audifono',descripcion:'Normal',precio:657000},
+             {id:6,nombre:'cascos',descripcion:'Radiografia',precio:45000}
+    ])
+    
     
     const busqueda = ref('')
     const busquedaDebounced = useDebounce(busqueda,300)
@@ -24,6 +33,7 @@ export const storeCitas = defineStore('citas',()=>{
     const paginacion = usePaginacion(filtradas,2)
     return {
         creoCitas,
+        creoCompras,
         busqueda,
         filtradas,
         ...paginacion,

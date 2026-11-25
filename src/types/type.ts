@@ -7,3 +7,11 @@ export interface diseñoCitas{
 
    
 }
+export interface diseñoCompras{
+    id:number,
+    nombre:string,
+    descripcion:string,
+    precio:number
+
+   
+}

@@ -1,22 +1,33 @@
-<script setup>
+<script setup lang="ts">
     import { storeCitas } from '@/stores/storeCitas';
     import { storeToRefs } from 'pinia';
     import ListaCitas from './ListaCitas.vue';
     import SeleccionMultiple from './SeleccionMultiple.vue';
-    import { useSeleccionMultiple } from '@/composable/useSeleccionMultiple.ts';
-    import { computed} from 'vue';
+    import { useSeleccionMultiple } from '@/composable/useSeleccionMultiple';
+    import { computed, ref} from 'vue';
     import FiltroCitas from './FiltroCitas.vue';
-    import { useTema} from '@/composable/useTema.ts';
+    import { useTema} from '@/composable/useTema';
+    import { strategiasTarifa } from '@/strategies/strategiasTarifa';
+    import type { TipoTarifa } from "@/types/tipoTarifa"
     const {cambiarTema, esClaro} = useTema()
     const citasStore = storeCitas()
-    const {busqueda,creoCitas} = storeToRefs(citasStore)
+    const {busqueda,creoCitas, creoCompras} = storeToRefs(citasStore)
     
     const ids = computed(()=>{
         return creoCitas.value.map(c=>c.id)
     })
-    
-    
     const {seleccionados,alternar,isSelecc,limpiar,selecTodas} = useSeleccionMultiple(ids)
+    
+    const tipoSelecc= ref<TipoTarifa>('tienda')
+    const porductosFiltro = computed(()=>{
+        return creoCompras.value.filter(p=>seleccionados.value.includes(p.id))
+    })
+    const total = ref()
+    function totalclick(){
+        return total.value = strategiasTarifa(tipoSelecc, porductosFiltro)
+        
+    }
+    
     </script>
 <template>
     <header :class="esClaro? 'comprobarClaro':'comprobarOscuro'">
@@ -34,7 +45,7 @@
     </SeleccionMultiple>-->
     <div class="columnas" :class="esClaro? 'panelClaro': 'panelOscuro'">
         <div>
-            <div class="filtroCit">
+            <div :class="esClaro?'filtroCit':'filtroCitasOsc'">
                 <FiltroCitas
                 v-model:prioridad="busqueda"/>
             </div>
@@ -68,20 +79,27 @@
             </SeleccionMultiple>-->
              <button @click="selecTodas()" :disabled="seleccionados.length===ids.length" >seleccionar todas</button>
                 <button @click="limpiar()" :disabled="seleccionados.length===0">limpiar selecciones</button>
-            
+                <label for="selec">Tarifa </label>
+                    <select name="tiposelec" id="selec" v-model="tipoSelecc">
+                        <option value="tienda">Recoger en tienda</option>
+                        <option value="domicilio">A domicilio</option>
+                        <option value="internacional">Envio Internacional</option>
+                    </select>
+                    <button @click="totalclick">comprar</button>
+                
+                
             <div class="columnas">
-                <div  v-for="x in creoCitas" :key="x.id" @click="alternar(x.id)" >
+                <div  v-for="x in creoCompras" :key="x.id" @click="alternar(x.id)" >
                    <div :class="[
                     esClaro? 'tarjetas':'tarjetasOscuro' ,
                     isSelecc(x.id)?'activar':'']"><strong>Nombre: {{x.nombre  }} </strong><br>
-                    <strong>Consulta: {{ x.consulta }}</strong><br>
-                    <strong>Estado: {{ x.estado }}</strong><br>
-                    <strong>Fecha: {{ x.fecha }}</strong><br></div>
+                    <strong>Descripcion: {{ x.descripcion }}</strong><br>
+                    <strong>Precio: {{ x.precio }}</strong><br></div>
                     
                 
                 
                 </div>
-                
+                total: {{ total }}
               </div>
                 
                </div>
@@ -123,9 +141,14 @@
         background-color: aqua;
     }
     
-    .filtroCit{
+    .filtroCitasOsc{
         margin-left: 200px;
         color: rgb(59, 55, 54);
+        font-size: 1.5rem;
+    }
+    .filtroCit{
+        margin-left: 200px;
+        color: tomato;
         font-size: 1.5rem;
     }
     
@@ -135,7 +158,8 @@
     }
     .columnas button{
         margin-top: 2rem;
-        margin-right: .6rem;
+        margin-right: .3rem;
+        margin-left: .3rem;
         background-color: rgb(218, 218, 215);
         border: 2px solid tomato;
         padding: .3rem;
